@@ -1,8 +1,8 @@
 package com.Binusa.BawasluServer.controller;
 
-import com.Binusa.BawasluServer.model.Prestasi;
+import com.Binusa.BawasluServer.model.Alumni;
 import com.Binusa.BawasluServer.response.CommonResponse;
-import com.Binusa.BawasluServer.service.PrestasiService;
+import com.Binusa.BawasluServer.service.AlumniService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,72 +14,72 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/smpn1bergas/api/prestasi")
+@RequestMapping("/smpn1bergas/api/alumni")
 @CrossOrigin(origins = "*")
-public class PrestasiController {
+public class AlumniController {
     @Autowired
-    private PrestasiService prestasiService;
+    private AlumniService alumniService;
 
     @PostMapping(path = "/add", consumes = "multipart/form-data")
-    public ResponseEntity<CommonResponse<Prestasi>> add(Prestasi prestasi, @RequestPart("file") MultipartFile multipartFile) throws SQLException, ClassNotFoundException {
-        CommonResponse<Prestasi> response = new CommonResponse<>();
+    public ResponseEntity<CommonResponse<Alumni>> add(Alumni alumni, @RequestPart("file") MultipartFile multipartFile) throws SQLException, ClassNotFoundException {
+        CommonResponse<Alumni> response = new CommonResponse<>();
         try {
-            Prestasi prestasi1 = prestasiService.add(prestasi, multipartFile);
+            Alumni prestasi1 = alumniService.add(alumni, multipartFile);
             response.setStatus("success");
             response.setCode(HttpStatus.CREATED.value());
             response.setData(prestasi1);
-            response.setMessage("Prestasi created successfully.");
+            response.setMessage("Alumni created successfully.");
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             response.setStatus("error");
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setData(null);
-            response.setMessage("Failed to create prestasi: " + e.getMessage());
+            response.setMessage("Failed to create alumni: " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @GetMapping("/all")
-    public ResponseEntity<List<Prestasi>> getAll(){
-        return ResponseEntity.ok(prestasiService.getAll());
+    public ResponseEntity<List<Alumni>> getAll(){
+        return ResponseEntity.ok(alumniService.getAll());
     }
     @GetMapping("{/id}")
-    public ResponseEntity<CommonResponse<Prestasi>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
-        CommonResponse<Prestasi> response = new CommonResponse<>();
+    public ResponseEntity<CommonResponse<Alumni>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
+        CommonResponse<Alumni> response = new CommonResponse<>();
         try {
-            Prestasi prestasi = prestasiService.getByid(id);
+            Alumni prestasi = alumniService.getById(id);
             response.setStatus("success");
             response.setCode(HttpStatus.OK.value());
             response.setData(prestasi);
-            response.setMessage("Prestasi get successfully.");
+            response.setMessage("Alumni get successfully.");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.setStatus("error");
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setData(null);
-            response.setMessage("Failed to get prestasi : " + e.getMessage());
+            response.setMessage("Failed to get alumni : " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @PutMapping(path = "/put/{id}", consumes = "multipart/form-data")
-    public ResponseEntity<CommonResponse<Prestasi>> updatePrestasi(@PathVariable("id") Long id, Prestasi prestasi,  @RequestPart("file") MultipartFile multipartFile ) throws SQLException, ClassNotFoundException {
-        CommonResponse<Prestasi> response = new CommonResponse<>();
+    public ResponseEntity<CommonResponse<Alumni>> updateAlumni(@PathVariable("id") Long id, Alumni prestasi,  @RequestPart("file") MultipartFile multipartFile ) throws SQLException, ClassNotFoundException {
+        CommonResponse<Alumni> response = new CommonResponse<>();
         try {
-            Prestasi tabelDip = prestasiService.edit(prestasi, multipartFile, id);
+            Alumni tabelDip = alumniService.edit(prestasi, multipartFile, id);
             response.setStatus("success");
             response.setCode(HttpStatus.OK.value());
             response.setData(tabelDip);
-            response.setMessage("Prestasi updated successfully.");
+            response.setMessage("Alumni updated successfully.");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.setStatus("error");
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setData(null);
-            response.setMessage("Failed to update prestasi : " + e.getMessage());
+            response.setMessage("Failed to update alumni : " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Boolean>> delete(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(prestasiService.delete(id));
+        return ResponseEntity.ok(alumniService.delete(id));
     }
 }

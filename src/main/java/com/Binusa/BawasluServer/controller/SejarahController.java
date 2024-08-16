@@ -1,0 +1,84 @@
+package com.Binusa.BawasluServer.controller;
+
+import com.Binusa.BawasluServer.model.Sejarah;
+import com.Binusa.BawasluServer.response.CommonResponse;
+import com.Binusa.BawasluServer.service.SejarahService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/smpn1bergas/api/sejarah")
+@CrossOrigin(origins = "*")
+public class SejarahController {
+    @Autowired
+    private SejarahService sejarahService;
+
+    @PostMapping(path = "/add")
+    public ResponseEntity<CommonResponse<Sejarah>> add(Sejarah sejarah) throws SQLException, ClassNotFoundException {
+        CommonResponse<Sejarah> response = new CommonResponse<>();
+        try {
+            Sejarah sejarah1 = sejarahService.add(sejarah);
+            response.setStatus("success");
+            response.setCode(HttpStatus.CREATED.value());
+            response.setData(sejarah1);
+            response.setMessage("Sejarah created successfully.");
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (Exception e) {
+            response.setStatus("error");
+            response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setData(null);
+            response.setMessage("Failed to create sejarah: " + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/all")
+    public ResponseEntity<List<Sejarah>> getAll(){
+        return ResponseEntity.ok(sejarahService.getAll());
+    }
+    @GetMapping("{/id}")
+    public ResponseEntity<CommonResponse<Sejarah>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
+        CommonResponse<Sejarah> response = new CommonResponse<>();
+        try {
+            Sejarah sejarah = sejarahService.getById(id);
+            response.setStatus("success");
+            response.setCode(HttpStatus.OK.value());
+            response.setData(sejarah);
+            response.setMessage("Sejarah get successfully.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.setStatus("error");
+            response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setData(null);
+            response.setMessage("Failed to get sejarah : " + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PutMapping(path = "/put/{id}", produces = "application/json")
+    public ResponseEntity<CommonResponse<Sejarah>> updateSejarah(@PathVariable("id") Long id, @RequestBody Sejarah sejarah) throws SQLException, ClassNotFoundException {
+        CommonResponse<Sejarah> response = new CommonResponse<>();
+        try {
+            Sejarah tabelDip = sejarahService.edit(sejarah, id);
+            response.setStatus("success");
+            response.setCode(HttpStatus.OK.value());
+            response.setData(tabelDip);
+            response.setMessage(" Sejarah updated successfully.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.setStatus("error");
+            response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setData(null);
+            response.setMessage("Failed to update sejarah : " + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, Boolean>> delete(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(sejarahService.delete(id));
+    }
+}
