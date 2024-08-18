@@ -41,7 +41,7 @@ public class VisiMisiController {
     public ResponseEntity<List<VisiMisi>> getAll(){
         return ResponseEntity.ok(visiMisiService.getAll());
     }
-    @GetMapping("{/id}")
+    @GetMapping("{id}")
     public ResponseEntity<CommonResponse<VisiMisi>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
         CommonResponse<VisiMisi> response = new CommonResponse<>();
         try {

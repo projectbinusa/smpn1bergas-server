@@ -42,7 +42,7 @@ public class PrestasiController {
     public ResponseEntity<List<Prestasi>> getAll(){
         return ResponseEntity.ok(prestasiService.getAll());
     }
-    @GetMapping("{/id}")
+    @GetMapping("{id}")
     public ResponseEntity<CommonResponse<Prestasi>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
         CommonResponse<Prestasi> response = new CommonResponse<>();
         try {

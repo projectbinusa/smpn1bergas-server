@@ -42,7 +42,7 @@ public class AlumniController {
     public ResponseEntity<List<Alumni>> getAll(){
         return ResponseEntity.ok(alumniService.getAll());
     }
-    @GetMapping("{/id}")
+    @GetMapping("{id}")
     public ResponseEntity<CommonResponse<Alumni>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
         CommonResponse<Alumni> response = new CommonResponse<>();
         try {

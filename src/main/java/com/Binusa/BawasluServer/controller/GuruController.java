@@ -67,7 +67,7 @@ public class GuruController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("{/id}")
+    @GetMapping("{id}")
     public ResponseEntity<CommonResponse<Guru>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
         CommonResponse<Guru> response = new CommonResponse<>();
         try {

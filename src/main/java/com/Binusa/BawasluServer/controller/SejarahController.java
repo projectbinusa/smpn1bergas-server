@@ -41,7 +41,7 @@ public class SejarahController {
     public ResponseEntity<List<Sejarah>> getAll(){
         return ResponseEntity.ok(sejarahService.getAll());
     }
-    @GetMapping("{/id}")
+    @GetMapping("{id}")
     public ResponseEntity<CommonResponse<Sejarah>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
         CommonResponse<Sejarah> response = new CommonResponse<>();
         try {
