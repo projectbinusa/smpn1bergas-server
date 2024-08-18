@@ -41,7 +41,7 @@ public class KontakController {
     public ResponseEntity<List<Kontak>> getAll(){
         return ResponseEntity.ok(kontakService.getAll());
     }
-    @GetMapping("{/id}")
+    @GetMapping("{id}")
     public ResponseEntity<CommonResponse<Kontak>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
         CommonResponse<Kontak> response = new CommonResponse<>();
         try {

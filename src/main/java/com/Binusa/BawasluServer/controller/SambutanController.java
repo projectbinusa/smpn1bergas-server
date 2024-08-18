@@ -41,7 +41,7 @@ public class SambutanController {
     public ResponseEntity<List<Sambutan>> getAll(){
         return ResponseEntity.ok(sambutanService.getAll());
     }
-    @GetMapping("{/id}")
+    @GetMapping("{id}")
     public ResponseEntity<CommonResponse<Sambutan>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
         CommonResponse<Sambutan> response = new CommonResponse<>();
         try {

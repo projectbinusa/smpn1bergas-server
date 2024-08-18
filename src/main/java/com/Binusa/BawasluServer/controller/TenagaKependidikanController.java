@@ -63,7 +63,7 @@ public class TenagaKependidikanController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("{/id}")
+    @GetMapping("{id}")
     public ResponseEntity<CommonResponse<TenagaKependidikan>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
         CommonResponse<TenagaKependidikan> response = new CommonResponse<>();
         try {
