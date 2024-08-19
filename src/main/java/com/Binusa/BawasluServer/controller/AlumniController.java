@@ -4,6 +4,9 @@ import com.Binusa.BawasluServer.model.Alumni;
 import com.Binusa.BawasluServer.response.CommonResponse;
 import com.Binusa.BawasluServer.service.AlumniService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +41,29 @@ public class AlumniController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/all")
-    public ResponseEntity<List<Alumni>> getAll(){
-        return ResponseEntity.ok(alumniService.getAll());
+    @GetMapping(path = "/all")
+    public ResponseEntity<CommonResponse<Page<Alumni>>> listAllAlumni(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        CommonResponse<Page<Alumni>> response = new CommonResponse<>();
+        try {
+            Page<Alumni> beritaPage = alumniService.getAll(pageable);
+            response.setStatus("success");
+            response.setCode(HttpStatus.OK.value());
+            response.setData(beritaPage);
+            response.setMessage(" Alumni list retrieved successfully.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.setStatus("error");
+            response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setData(null);
+            response.setMessage("Failed to retrieve guru list: " + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("{id}")
     public ResponseEntity<CommonResponse<Alumni>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {

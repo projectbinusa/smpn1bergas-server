@@ -9,6 +9,8 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,8 +40,8 @@ public class AlumniService {
     public Alumni getById(Long id){
         return alumniRepository.findById(id).orElse(null);
     }
-    public List<Alumni> getAll(){
-        return alumniRepository.findAll();
+    public Page<Alumni> getAll(Pageable pageable){
+        return alumniRepository.findAll(pageable);
     }
     public Alumni edit(Alumni alumni , MultipartFile multipartFile , Long id) throws Exception {
     Alumni update = alumniRepository.findById(id).orElse(null);

@@ -1,9 +1,8 @@
 package com.Binusa.BawasluServer.controller;
 
-import com.Binusa.BawasluServer.model.Prestasi;
-import com.Binusa.BawasluServer.model.Prestasi;
+import com.Binusa.BawasluServer.model.Sarana;
 import com.Binusa.BawasluServer.response.CommonResponse;
-import com.Binusa.BawasluServer.service.PrestasiService;
+import com.Binusa.BawasluServer.service.SaranaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,99 +10,97 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/smpn1bergas/api/prestasi")
+@RequestMapping("/smpn1bergas/api/sarana")
 @CrossOrigin(origins = "*")
-public class PrestasiController {
+public class SaranaController {
     @Autowired
-    private PrestasiService prestasiService;
+    private SaranaService saranaService;
 
-    @PostMapping(path = "/add", consumes = "multipart/form-data")
-    public ResponseEntity<CommonResponse<Prestasi>> add(Prestasi prestasi, @RequestPart("file") MultipartFile multipartFile) throws SQLException, ClassNotFoundException {
-        CommonResponse<Prestasi> response = new CommonResponse<>();
+    @PostMapping(path = "/add")
+    public ResponseEntity<CommonResponse<Sarana>> add(Sarana sarana) throws SQLException, ClassNotFoundException {
+        CommonResponse<Sarana> response = new CommonResponse<>();
         try {
-            Prestasi prestasi1 = prestasiService.add(prestasi, multipartFile);
+            Sarana sarana1 = saranaService.add(sarana);
             response.setStatus("success");
             response.setCode(HttpStatus.CREATED.value());
-            response.setData(prestasi1);
-            response.setMessage("Prestasi created successfully.");
+            response.setData(sarana1);
+            response.setMessage("Sarana created successfully.");
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             response.setStatus("error");
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setData(null);
-            response.setMessage("Failed to create prestasi: " + e.getMessage());
+            response.setMessage("Failed to create sarana: " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @GetMapping(path = "/all")
-    public ResponseEntity<CommonResponse<Page<Prestasi>>> listAllPrestasi(
+    public ResponseEntity<CommonResponse<Page<Sarana>>> listAllSarana(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size
     ) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        CommonResponse<Page<Prestasi>> response = new CommonResponse<>();
+        CommonResponse<Page<Sarana>> response = new CommonResponse<>();
         try {
-            Page<Prestasi> beritaPage = prestasiService.getAll(pageable);
+            Page<Sarana> beritaPage = saranaService.getAll(pageable);
             response.setStatus("success");
             response.setCode(HttpStatus.OK.value());
             response.setData(beritaPage);
-            response.setMessage(" Prestasi list retrieved successfully.");
+            response.setMessage(" Sarana list retrieved successfully.");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.setStatus("error");
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setData(null);
-            response.setMessage("Failed to retrieve guru list: " + e.getMessage());
+            response.setMessage("Failed to retrieve sarana list: " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("{id}")
-    public ResponseEntity<CommonResponse<Prestasi>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
-        CommonResponse<Prestasi> response = new CommonResponse<>();
+    @GetMapping("{/id}")
+    public ResponseEntity<CommonResponse<Sarana>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
+        CommonResponse<Sarana> response = new CommonResponse<>();
         try {
-            Prestasi prestasi = prestasiService.getByid(id);
+            Sarana sarana = saranaService.getById(id);
             response.setStatus("success");
             response.setCode(HttpStatus.OK.value());
-            response.setData(prestasi);
-            response.setMessage("Prestasi get successfully.");
+            response.setData(sarana);
+            response.setMessage("Sarana get successfully.");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.setStatus("error");
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setData(null);
-            response.setMessage("Failed to get prestasi : " + e.getMessage());
+            response.setMessage("Failed to get sarana : " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PutMapping(path = "/put/{id}", consumes = "multipart/form-data")
-    public ResponseEntity<CommonResponse<Prestasi>> updatePrestasi(@PathVariable("id") Long id, Prestasi prestasi,  @RequestPart("file") MultipartFile multipartFile ) throws SQLException, ClassNotFoundException {
-        CommonResponse<Prestasi> response = new CommonResponse<>();
+    @PutMapping(path = "/put/{id}", produces = "application/json")
+    public ResponseEntity<CommonResponse<Sarana>> updateSarana(@PathVariable("id") Long id, @RequestBody Sarana sarana) throws SQLException, ClassNotFoundException {
+        CommonResponse<Sarana> response = new CommonResponse<>();
         try {
-            Prestasi tabelDip = prestasiService.edit(prestasi, multipartFile, id);
+            Sarana tabelDip = saranaService.edit(sarana, id);
             response.setStatus("success");
             response.setCode(HttpStatus.OK.value());
             response.setData(tabelDip);
-            response.setMessage("Prestasi updated successfully.");
+            response.setMessage(" Sarana updated successfully.");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.setStatus("error");
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setData(null);
-            response.setMessage("Failed to update prestasi : " + e.getMessage());
+            response.setMessage("Failed to update sarana : " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Boolean>> delete(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(prestasiService.delete(id));
+        return ResponseEntity.ok(saranaService.delete(id));
     }
 }

@@ -1,9 +1,9 @@
 package com.Binusa.BawasluServer.controller;
 
-import com.Binusa.BawasluServer.model.Prestasi;
-import com.Binusa.BawasluServer.model.Prestasi;
+import com.Binusa.BawasluServer.DTO.FotoSaranaDTO;
+import com.Binusa.BawasluServer.model.FotoSarana;
 import com.Binusa.BawasluServer.response.CommonResponse;
-import com.Binusa.BawasluServer.service.PrestasiService;
+import com.Binusa.BawasluServer.service.FotoSaranaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,96 +14,95 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/smpn1bergas/api/prestasi")
+@RequestMapping("/smpn1bergas/api/foto_sarana")
 @CrossOrigin(origins = "*")
-public class PrestasiController {
+public class FotoSaranaController {
     @Autowired
-    private PrestasiService prestasiService;
+    private FotoSaranaService fotoSaranaService;
 
     @PostMapping(path = "/add", consumes = "multipart/form-data")
-    public ResponseEntity<CommonResponse<Prestasi>> add(Prestasi prestasi, @RequestPart("file") MultipartFile multipartFile) throws SQLException, ClassNotFoundException {
-        CommonResponse<Prestasi> response = new CommonResponse<>();
+    public ResponseEntity<CommonResponse<FotoSarana>> add(FotoSaranaDTO fotoSarana, @RequestPart("file") MultipartFile multipartFile) throws SQLException, ClassNotFoundException {
+        CommonResponse<FotoSarana> response = new CommonResponse<>();
         try {
-            Prestasi prestasi1 = prestasiService.add(prestasi, multipartFile);
+            FotoSarana fotoSarana1 = fotoSaranaService.add(fotoSarana, multipartFile);
             response.setStatus("success");
             response.setCode(HttpStatus.CREATED.value());
-            response.setData(prestasi1);
-            response.setMessage("Prestasi created successfully.");
+            response.setData(fotoSarana1);
+            response.setMessage("FotoSarana created successfully.");
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (Exception e) {
             response.setStatus("error");
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setData(null);
-            response.setMessage("Failed to create prestasi: " + e.getMessage());
+            response.setMessage("Failed to create fotoSarana: " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @GetMapping(path = "/all")
-    public ResponseEntity<CommonResponse<Page<Prestasi>>> listAllPrestasi(
+    public ResponseEntity<CommonResponse<Page<FotoSarana>>> listAllFotoSarana(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size
     ) {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        CommonResponse<Page<Prestasi>> response = new CommonResponse<>();
+        CommonResponse<Page<FotoSarana>> response = new CommonResponse<>();
         try {
-            Page<Prestasi> beritaPage = prestasiService.getAll(pageable);
+            Page<FotoSarana> beritaPage = fotoSaranaService.getAll(pageable);
             response.setStatus("success");
             response.setCode(HttpStatus.OK.value());
             response.setData(beritaPage);
-            response.setMessage(" Prestasi list retrieved successfully.");
+            response.setMessage(" FotoSarana list retrieved successfully.");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.setStatus("error");
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setData(null);
-            response.setMessage("Failed to retrieve guru list: " + e.getMessage());
+            response.setMessage("Failed to retrieve fotoSarana list: " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("{id}")
-    public ResponseEntity<CommonResponse<Prestasi>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
-        CommonResponse<Prestasi> response = new CommonResponse<>();
+    @GetMapping("{/id}")
+    public ResponseEntity<CommonResponse<FotoSarana>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {
+        CommonResponse<FotoSarana> response = new CommonResponse<>();
         try {
-            Prestasi prestasi = prestasiService.getByid(id);
+            FotoSarana fotoSarana = fotoSaranaService.getById(id);
             response.setStatus("success");
             response.setCode(HttpStatus.OK.value());
-            response.setData(prestasi);
-            response.setMessage("Prestasi get successfully.");
+            response.setData(fotoSarana);
+            response.setMessage("FotoSarana get successfully.");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.setStatus("error");
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setData(null);
-            response.setMessage("Failed to get prestasi : " + e.getMessage());
+            response.setMessage("Failed to get fotoSarana : " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @PutMapping(path = "/put/{id}", consumes = "multipart/form-data")
-    public ResponseEntity<CommonResponse<Prestasi>> updatePrestasi(@PathVariable("id") Long id, Prestasi prestasi,  @RequestPart("file") MultipartFile multipartFile ) throws SQLException, ClassNotFoundException {
-        CommonResponse<Prestasi> response = new CommonResponse<>();
+    public ResponseEntity<CommonResponse<FotoSarana>> updateFotoSarana(@PathVariable("id") Long id, FotoSaranaDTO fotoSarana,  @RequestPart("file") MultipartFile multipartFile ) throws SQLException, ClassNotFoundException {
+        CommonResponse<FotoSarana> response = new CommonResponse<>();
         try {
-            Prestasi tabelDip = prestasiService.edit(prestasi, multipartFile, id);
+            FotoSarana fotoSarana1 = fotoSaranaService.edit(fotoSarana, multipartFile, id);
             response.setStatus("success");
             response.setCode(HttpStatus.OK.value());
-            response.setData(tabelDip);
-            response.setMessage("Prestasi updated successfully.");
+            response.setData(fotoSarana1);
+            response.setMessage("FotoSarana updated successfully.");
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             response.setStatus("error");
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setData(null);
-            response.setMessage("Failed to update prestasi : " + e.getMessage());
+            response.setMessage("Failed to update fotoSarana : " + e.getMessage());
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Boolean>> delete(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(prestasiService.delete(id));
+        return ResponseEntity.ok(fotoSaranaService.delete(id));
     }
 }

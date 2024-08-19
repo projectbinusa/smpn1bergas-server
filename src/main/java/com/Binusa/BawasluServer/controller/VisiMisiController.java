@@ -1,9 +1,13 @@
 package com.Binusa.BawasluServer.controller;
 
 import com.Binusa.BawasluServer.model.VisiMisi;
+import com.Binusa.BawasluServer.model.VisiMisi;
 import com.Binusa.BawasluServer.response.CommonResponse;
 import com.Binusa.BawasluServer.service.VisiMisiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,9 +41,29 @@ public class VisiMisiController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/all")
-    public ResponseEntity<List<VisiMisi>> getAll(){
-        return ResponseEntity.ok(visiMisiService.getAll());
+    @GetMapping(path = "/all")
+    public ResponseEntity<CommonResponse<Page<VisiMisi>>> listAllVisiMisi(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        CommonResponse<Page<VisiMisi>> response = new CommonResponse<>();
+        try {
+            Page<VisiMisi> beritaPage = visiMisiService.getAll(pageable);
+            response.setStatus("success");
+            response.setCode(HttpStatus.OK.value());
+            response.setData(beritaPage);
+            response.setMessage(" VisiMisi list retrieved successfully.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.setStatus("error");
+            response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setData(null);
+            response.setMessage("Failed to retrieve guru list: " + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("{id}")
     public ResponseEntity<CommonResponse<VisiMisi>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {

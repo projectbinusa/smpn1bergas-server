@@ -3,6 +3,8 @@ package com.Binusa.BawasluServer.service;
 import com.Binusa.BawasluServer.model.VisiMisi;
 import com.Binusa.BawasluServer.repository.VisiMisiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -21,8 +23,8 @@ public class VisiMisiService {
     public VisiMisi getById(Long id){
         return visiMisiRepository.findById(id).orElse(null);
     }
-    public List<VisiMisi> getAll(){
-        return visiMisiRepository.findAll();
+    public Page<VisiMisi> getAll(Pageable pageable){
+        return visiMisiRepository.findAll(pageable);
     }
     public VisiMisi edit(VisiMisi visiMisi ,Long id){
         VisiMisi update = visiMisiRepository.findById(id).orElse(null);

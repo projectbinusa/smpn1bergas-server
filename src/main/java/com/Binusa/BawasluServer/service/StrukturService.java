@@ -1,8 +1,9 @@
 package com.Binusa.BawasluServer.service;
 
-import com.Binusa.BawasluServer.model.Guru;
-import com.Binusa.BawasluServer.repository.GuruRepository;
-
+import com.Binusa.BawasluServer.DTO.StrukturDTO;
+import com.Binusa.BawasluServer.model.Struktur;
+import com.Binusa.BawasluServer.repository.JenisStrukturRepository;
+import com.Binusa.BawasluServer.repository.StrukturRepository;
 import com.google.auth.Credentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.BlobId;
@@ -24,39 +25,40 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
-public class GuruService {
-
+public class StrukturService {
     private static final String DOWNLOAD_URL = "https://firebasestorage.googleapis.com/v0/b/bawaslu-a6bd2.appspot.com/o/%s?alt=media";
     @Autowired
-    private GuruRepository guruRepository;
+    private StrukturRepository strukturRepository;
 
-    public Guru add(Guru guru , MultipartFile multipartFile) throws Exception {
+    @Autowired
+    private JenisStrukturRepository jenisStrukturRepository;
+
+    public Struktur add(StrukturDTO struktur, MultipartFile multipartFile) throws Exception {
+        Struktur newStruktur = new Struktur();
         String image = imageConverter(multipartFile);
-        guru.setFoto(image);
-        return guruRepository.save(guru);
+        newStruktur.setNama(struktur.getNama());
+        newStruktur.setJabatan(struktur.getJabatan());
+        newStruktur.setFoto(image);
+        newStruktur.setTugas(struktur.getTugas());
+        newStruktur.setJenisStruktur(jenisStrukturRepository.findById(struktur.getId_jenis()).orElse(null));
+
+        return strukturRepository.save(newStruktur);
     }
-    public Guru getById(Long id){
-        return guruRepository.findById(id).orElse(null);
+
+    public Struktur findById(Long id) {
+        return strukturRepository.findById(id).orElse(null);
     }
-    public Page<Guru> getAll(Pageable pageable){
-        return guruRepository.findAll(pageable);
-    }
-    public Guru edit(Guru guru , MultipartFile multipartFile , Long id) throws Exception {
-        Guru update = guruRepository.findById(id).orElse(null);
-        update.setMapel(guru.getMapel());
-        update.setNama_guru(guru.getNama_guru());
-        String image = imageConverter(multipartFile);
-        update.setFoto(image);
-        return guruRepository.save(update);
+
+    public Page<Struktur> getAll(Pageable pageable) {
+        return strukturRepository.findAll(pageable);
     }
 
     public Map<String, Boolean> delete(Long id) {
         try {
-            guruRepository.deleteById(id);
+            strukturRepository.deleteById(id);
             Map<String, Boolean> response = new HashMap<>();
             response.put("Deleted", Boolean.TRUE);
             return response;
@@ -65,6 +67,21 @@ public class GuruService {
         }
     }
 
+    public Struktur edit(Long id, StrukturDTO strukturDTO, MultipartFile multipartFile) throws Exception {
+        Struktur struktur = strukturRepository.findById(id).orElse(null);
+        String image = imageConverter(multipartFile);
+        struktur.setNama(strukturDTO.getNama());
+        struktur.setJabatan(strukturDTO.getJabatan());
+        struktur.setFoto(image);
+        struktur.setTugas(strukturDTO.getTugas());
+        struktur.setJenisStruktur(jenisStrukturRepository.findById(strukturDTO.getId_jenis()).orElse(null));
+
+        return strukturRepository.save(struktur);
+    }
+
+    public Page<Struktur> getByJenis(Long id, Pageable pageable) {
+        return strukturRepository.findByJenisId(id, pageable);
+    }
 
     private String imageConverter(MultipartFile multipartFile) throws Exception {
         try {
@@ -102,4 +119,6 @@ public class GuruService {
         storage.create(blobInfo, Files.readAllBytes(file.toPath()));
         return String.format(DOWNLOAD_URL, URLEncoder.encode(fileName, StandardCharsets.UTF_8));
     }
+
+
 }
