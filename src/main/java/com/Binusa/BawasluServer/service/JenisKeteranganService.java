@@ -112,18 +112,18 @@ public class JenisKeteranganService {
 
         return entity;
     }
-    public Page<IsiInformasiKeteranganApiResponseDTO> getByCategoryWithPagination(Long jenisKeteranganId, Pageable pageable) {
-        JenisKeterangan jenisKeterangan = jenisKeteranganRepository.findById(jenisKeteranganId)
-                .orElseThrow(() -> new EntityNotFoundException("JenisKeterangan not found with id: " + jenisKeteranganId));
-
-        Page<IsiInformasiKeterangan> isiInformasiKeteranganPage = isiInformasiKeteranganRepository.findByJenisKeteranganId(jenisKeteranganId, pageable);
-
-        List<IsiInformasiKeteranganApiResponseDTO> isiInformasiKeteranganApiResponseDTOList = isiInformasiKeteranganPage.getContent().stream()
-                .map(this::mapToApiResponseDTO)
-                .collect(Collectors.toList());
-
-        return new PageImpl<>(isiInformasiKeteranganApiResponseDTOList, pageable, isiInformasiKeteranganPage.getTotalElements());
-    }
+//    public Page<IsiInformasiKeteranganApiResponseDTO> getByCategoryWithPagination(Long jenisKeteranganId, Pageable pageable) {
+//        JenisKeterangan jenisKeterangan = jenisKeteranganRepository.findById(jenisKeteranganId)
+//                .orElseThrow(() -> new EntityNotFoundException("JenisKeterangan not found with id: " + jenisKeteranganId));
+//
+//        Page<IsiInformasiKeterangan> isiInformasiKeteranganPage = isiInformasiKeteranganRepository.findByJenisKeteranganId(jenisKeteranganId, pageable);
+//
+//        List<IsiInformasiKeteranganApiResponseDTO> isiInformasiKeteranganApiResponseDTOList = isiInformasiKeteranganPage.getContent().stream()
+//                .map(this::mapToApiResponseDTO)
+//                .collect(Collectors.toList());
+//
+//        return new PageImpl<>(isiInformasiKeteranganApiResponseDTOList, pageable, isiInformasiKeteranganPage.getTotalElements());
+//    }
 
     private IsiInformasiKeteranganApiResponseDTO mapToApiResponseDTO(IsiInformasiKeterangan isiInformasiKeterangan) {
         IsiInformasiKeteranganApiResponseDTO isiInformasiKeteranganDTO = new IsiInformasiKeteranganApiResponseDTO();

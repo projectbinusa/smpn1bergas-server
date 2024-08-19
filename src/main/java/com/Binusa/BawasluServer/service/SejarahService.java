@@ -3,6 +3,8 @@ package com.Binusa.BawasluServer.service;
 import com.Binusa.BawasluServer.model.Sejarah;
 import com.Binusa.BawasluServer.repository.SejarahRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -21,8 +23,8 @@ public class SejarahService {
     public Sejarah getById(Long id){
         return sejarahRepository.findById(id).orElse(null);
     }
-    public List<Sejarah> getAll(){
-        return sejarahRepository.findAll();
+    public Page<Sejarah> getAll(Pageable pageable){
+        return sejarahRepository.findAll(pageable);
     }
     public Sejarah edit(Sejarah sejarah ,Long id){
         Sejarah update = sejarahRepository.findById(id).orElse(null);

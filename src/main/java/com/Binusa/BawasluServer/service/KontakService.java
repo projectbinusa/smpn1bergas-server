@@ -3,6 +3,8 @@ package com.Binusa.BawasluServer.service;
 import com.Binusa.BawasluServer.model.Kontak;
 import com.Binusa.BawasluServer.repository.KontakRespository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -21,8 +23,8 @@ public class KontakService {
     public Kontak getById(Long id){
         return kontakRespository.findById(id).orElse(null);
     }
-    public List<Kontak> getAll(){
-        return kontakRespository.findAll();
+    public Page<Kontak> getAll(Pageable pageable){
+        return kontakRespository.findAll(pageable);
     }
     public Kontak edit(Kontak kontak , Long id){
         Kontak update = kontakRespository.findById(id).orElse(null);

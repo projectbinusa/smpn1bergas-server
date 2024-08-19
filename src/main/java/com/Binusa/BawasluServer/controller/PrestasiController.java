@@ -1,9 +1,13 @@
 package com.Binusa.BawasluServer.controller;
 
 import com.Binusa.BawasluServer.model.Prestasi;
+import com.Binusa.BawasluServer.model.Prestasi;
 import com.Binusa.BawasluServer.response.CommonResponse;
 import com.Binusa.BawasluServer.service.PrestasiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +42,29 @@ public class PrestasiController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/all")
-    public ResponseEntity<List<Prestasi>> getAll(){
-        return ResponseEntity.ok(prestasiService.getAll());
+    @GetMapping(path = "/all")
+    public ResponseEntity<CommonResponse<Page<Prestasi>>> listAllPrestasi(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size
+    ) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        CommonResponse<Page<Prestasi>> response = new CommonResponse<>();
+        try {
+            Page<Prestasi> beritaPage = prestasiService.getAll(pageable);
+            response.setStatus("success");
+            response.setCode(HttpStatus.OK.value());
+            response.setData(beritaPage);
+            response.setMessage(" Prestasi list retrieved successfully.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.setStatus("error");
+            response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setData(null);
+            response.setMessage("Failed to retrieve guru list: " + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping("{/id}")
     public ResponseEntity<CommonResponse<Prestasi>> get(@PathVariable("id") long id) throws SQLException, ClassNotFoundException {

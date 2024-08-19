@@ -108,30 +108,30 @@ public class JenisKeteranganController {
         response.setMessage("Jenis keterangan berhasil dihapus");
         return ResponseEntity.ok(response);
     }
-    @GetMapping("/{jenisKeterangan}/isi-informasi")
-    public ResponseEntity<CommonResponse<Page<IsiInformasiKeteranganApiResponseDTO>>> getIsiInformasiByCategory(
-            @PathVariable("jenisKeterangan") Long jenisKeterangan,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortOrder) {
-
-        Pageable pageable;
-        if (sortOrder.equals("asc")) {
-            pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
-        } else {
-            pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
-        }
-
-        Page<IsiInformasiKeteranganApiResponseDTO> isiInformasiKeteranganPage = jenisKeteranganService.getByCategoryWithPagination(jenisKeterangan, pageable);
-
-        CommonResponse<Page<IsiInformasiKeteranganApiResponseDTO>> response = new CommonResponse<>();
-        response.setStatus("success");
-        response.setCode(200);
-        response.setData(isiInformasiKeteranganPage);
-        response.setMessage("Informasi retrieved successfully.");
-        return ResponseEntity.ok(response);
-    }
+//    @GetMapping("/{jenisKeterangan}/isi-informasi")
+//    public ResponseEntity<CommonResponse<Page<IsiInformasiKeteranganApiResponseDTO>>> getIsiInformasiByCategory(
+//            @PathVariable("jenisKeterangan") Long jenisKeterangan,
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size,
+//            @RequestParam(defaultValue = "id") String sortBy,
+//            @RequestParam(defaultValue = "asc") String sortOrder) {
+//
+//        Pageable pageable;
+//        if (sortOrder.equals("asc")) {
+//            pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
+//        } else {
+//            pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
+//        }
+//
+//        Page<IsiInformasiKeteranganApiResponseDTO> isiInformasiKeteranganPage = jenisKeteranganService.getByCategoryWithPagination(jenisKeterangan, pageable);
+//
+//        CommonResponse<Page<IsiInformasiKeteranganApiResponseDTO>> response = new CommonResponse<>();
+//        response.setStatus("success");
+//        response.setCode(200);
+//        response.setData(isiInformasiKeteranganPage);
+//        response.setMessage("Informasi retrieved successfully.");
+//        return ResponseEntity.ok(response);
+//    }
 
 }
 

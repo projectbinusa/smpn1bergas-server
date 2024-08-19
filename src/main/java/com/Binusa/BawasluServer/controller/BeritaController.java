@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/bawaslu/api/berita")
+@RequestMapping("/smpn1bergas/api/berita")
 @CrossOrigin(origins = "*")
 public class BeritaController {
 

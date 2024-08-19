@@ -9,6 +9,8 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -56,8 +58,8 @@ public class PrestasiService {
     public Prestasi getByid(Long id){
         return prestasiRepository.findById(id).orElse(null);
     }
-    public List<Prestasi> getAll(){
-        return prestasiRepository.findAll();
+    public Page<Prestasi> getAll(Pageable pageable){
+        return prestasiRepository.findAll(pageable);
     }
     public Map<String, Boolean> delete(Long id) {
         try {
