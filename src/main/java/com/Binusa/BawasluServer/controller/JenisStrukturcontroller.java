@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 
 @RestController
-@RequestMapping("/smpn1bergas/api/jenis_struktur")
+@RequestMapping("/api/jenis_struktur")
 @CrossOrigin(origins = "*")
 public class JenisStrukturcontroller {
     @Autowired

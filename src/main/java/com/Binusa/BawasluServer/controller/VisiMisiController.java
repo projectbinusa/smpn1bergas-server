@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/smpn1bergas/api/visiMisi")
+@RequestMapping("/api/visiMisi")
 @CrossOrigin(origins = "*")
 public class VisiMisiController {
     @Autowired

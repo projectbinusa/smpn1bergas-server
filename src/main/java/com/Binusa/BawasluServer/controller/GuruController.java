@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/smpn1bergas/api/guru")
+@RequestMapping("/api/guru")
 @CrossOrigin(origins = "*")
 public class GuruController {
     @Autowired

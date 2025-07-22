@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/smpn1bergas/api/ekstrakulikuler")
+@RequestMapping("/api/ekstrakulikuler")
 @CrossOrigin(origins = "*")
 public class EkstrakulikulerController {
     @Autowired

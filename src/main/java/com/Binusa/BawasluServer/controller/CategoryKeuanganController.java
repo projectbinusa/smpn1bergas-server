@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/smpn1bergas/api/category_keuangan")
+@RequestMapping("/api/category_keuangan")
 @CrossOrigin(origins = "*")
 public class CategoryKeuanganController {
     @Autowired

@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/smpn1bergas/api/keuangan")
+@RequestMapping("/api/keuangan")
 @CrossOrigin(origins = "*")
 public class KeuanganController {
     @Autowired

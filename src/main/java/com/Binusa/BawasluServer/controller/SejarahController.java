@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/smpn1bergas/api/sejarah")
+@RequestMapping("/api/sejarah")
 @CrossOrigin(origins = "*")
 public class SejarahController {
     @Autowired
